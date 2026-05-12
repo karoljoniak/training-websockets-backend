@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import type { User } from '@prisma/client';
 import { PrismaService } from './prisma/prisma.service';
 
 @Injectable()
@@ -9,7 +10,7 @@ export class AppService {
     return 'Hello World!';
   }
 
-  findUsers() {
+  async findUsers(): Promise<Omit<User, 'passwordHash'>[]> {
     return this.prisma.user.findMany({
       orderBy: { createdAt: 'desc' },
       select: {
